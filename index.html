@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#99f6e4" />
+    <title>Daily Growth Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="bg-fluid" aria-hidden="true">
+      <span class="bg-fluid__blob bg-fluid__blob--a"></span>
+      <span class="bg-fluid__blob bg-fluid__blob--b"></span>
+      <span class="bg-fluid__blob bg-fluid__blob--c"></span>
+    </div>
+
+    <div id="auth-gate" class="auth-gate">
+      <div class="auth-card">
+        <h1 class="auth-heading">Daily Growth Tracker</h1>
+        <p class="auth-sub">Create an account or sign in to save tasks and reports in your personal database.</p>
+        <div class="auth-tabs" role="tablist">
+          <button type="button" id="tab-register" class="auth-tab auth-tab--active" role="tab">Create account</button>
+          <button type="button" id="tab-login" class="auth-tab" role="tab">Sign in</button>
+        </div>
+
+        <div id="auth-panel-register" class="auth-panel" role="tabpanel">
+          <form id="form-register" class="auth-form">
+            <label class="auth-label" for="reg-email">Email</label>
+            <input id="reg-email" class="auth-input" type="email" autocomplete="email" required />
+            <label class="auth-label" for="reg-password">Password (8+ characters)</label>
+            <input id="reg-password" class="auth-input" type="password" autocomplete="new-password" required minlength="8" />
+            <button type="submit" class="auth-submit">Create account</button>
+          </form>
+          <p id="auth-error-register" class="auth-error" hidden></p>
+          <p class="auth-switch"><a href="#" id="link-to-login">Already registered? Sign in</a></p>
+        </div>
+
+        <div id="auth-panel-login" class="auth-panel" hidden role="tabpanel">
+          <form id="form-login" class="auth-form">
+            <label class="auth-label" for="login-email">Email</label>
+            <input id="login-email" class="auth-input" type="email" autocomplete="email" required />
+            <label class="auth-label" for="login-password">Password</label>
+            <input id="login-password" class="auth-input" type="password" autocomplete="current-password" required />
+            <button type="submit" class="auth-submit">Sign in</button>
+          </form>
+          <p id="auth-error-login" class="auth-error" hidden></p>
+          <p class="auth-switch"><a href="#" id="link-to-register">New user? Create account</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-shell" class="main-shell" hidden>
+      <header class="site-header">
+        <div class="site-header__inner">
+          <div class="site-header-row">
+            <div class="site-header-inner">
+              <svg
+                class="site-logo"
+                width="44"
+                height="44"
+                viewBox="0 0 48 48"
+                role="img"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient id="logoGradGrowth" x1="8" y1="42" x2="40" y2="8" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0f766e" />
+                    <stop offset="0.42" stop-color="#6366f1" />
+                    <stop offset="1" stop-color="#f59e0b" />
+                  </linearGradient>
+                </defs>
+                <rect x="2" y="2" width="44" height="44" rx="14" fill="url(#logoGradGrowth)" />
+                <!-- Custom sprout: stem, two leaves, seed highlight, soil line -->
+                <path
+                  d="M24 35.5V22.5"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-opacity="0.95"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M24 24.5c-6.5 0.5-11-3-12.5-7.5 4.5 2.5 9.5 3.8 12.5 7.5z"
+                  fill="#fff"
+                  fill-opacity="0.92"
+                />
+                <path
+                  d="M24.5 23c7-1 12-5.5 13-10.5-5 1.2-9.8 4.5-13 10.5z"
+                  fill="#fff"
+                  fill-opacity="0.72"
+                />
+                <circle cx="24" cy="14" r="2.5" fill="#fff" fill-opacity="0.88" />
+                <path
+                  d="M11 37.5q6.5-2.5 13 0"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-opacity="0.32"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h1 class="site-title">Daily Growth Tracker</h1>
+            </div>
+            <div id="user-bar" class="user-bar" hidden>
+              <span id="user-email" class="user-email"></span>
+              <button type="button" id="btn-logout" class="btn-logout">Sign out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="main-body">
+        <aside class="calendar-sidebar" aria-label="Calendar">
+          <div id="calendar-mount" class="calendar-mount"></div>
+          <button type="button" id="btn-cal-today" class="cal-today-btn">Jump to today</button>
+        </aside>
+
+        <div class="main-column">
+        <div class="app">
+          <header class="hero">
+            <p class="brand" id="hero-brand">Today</p>
+            <p class="hero-date" id="hero-date"></p>
+            <h2 class="hero-title" id="hero-day"></h2>
+          </header>
+
+          <div class="card">
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span id="progress-label-text">Today&apos;s progress</span>
+                <strong id="progress-text">0% · 0/0 done</strong>
+              </div>
+              <div class="progress-track" id="progress-track">
+                <div class="progress-gradient-bar" id="progress-gradient-bar"></div>
+              </div>
+            </div>
+            <p class="hint">Finish everything for this day to fill the bar — then enjoy a small celebration.</p>
+            <p class="hint" id="est-time-summary" hidden></p>
+          </div>
+
+          <div class="alert" id="overload-alert" hidden>
+            <p id="overload-text"></p>
+            <button type="button" class="dismiss" id="dismiss-overload">Dismiss for this day</button>
+          </div>
+
+          <div class="card" id="pattern-suggestions" hidden>
+            <h2>From your habits</h2>
+            <p class="hint" style="margin-top: 0; margin-bottom: 0.75rem">
+              Recurring tasks from your history — tap to add.
+            </p>
+            <div class="suggestions-row" id="suggestion-chips"></div>
+          </div>
+
+          <div class="card">
+            <h2>Daily Growth tracker</h2>
+            <ul class="task-list" id="task-list"></ul>
+            <div class="add-row">
+              <input
+                type="text"
+                id="task-input"
+                placeholder="Add a task..."
+                autocomplete="off"
+                maxlength="200"
+              />
+              <button type="button" id="add-task">Add</button>
+            </div>
+            <div class="toolbar">
+              <button type="button" id="download-report">Download report</button>
+              <button type="button" id="export-csv">Export CSV</button>
+              <label class="file-btn">
+                Import CSV
+                <input type="file" id="import-csv" accept=".csv,text/csv" />
+              </label>
+            </div>
+            <p class="hint" id="import-feedback" role="status" aria-live="polite" hidden></p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="affirmation-modal" role="dialog" aria-modal="true" aria-labelledby="affirmation-heading">
+      <div class="modal">
+        <h3 id="affirmation-heading">Today&apos;s affirmation</h3>
+        <p id="affirmation-text"></p>
+        <div class="modal-actions">
+          <button type="button" class="primary" id="close-affirmation">Start my day</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay modal-hours" id="hours-warning-modal" role="dialog" aria-modal="true" aria-labelledby="hours-warning-heading">
+      <div class="modal">
+        <h3 id="hours-warning-heading">A lot on your plate</h3>
+        <p id="hours-warning-text">
+          Your list of tasks may not get finished in a day. Estimated time is over 14 hours — consider breaking work into smaller chunks, moving some items to tomorrow, or adjusting time estimates.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="primary" id="close-hours-warning">Understood</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="celebration-overlay" id="celebration" aria-hidden="true">
+      <div class="celebration-visual" aria-hidden="true">
+        <div class="confetti-ring">
+          <span class="confetti-piece" style="--idx: 0"></span>
+          <span class="confetti-piece" style="--idx: 1"></span>
+          <span class="confetti-piece" style="--idx: 2"></span>
+          <span class="confetti-piece" style="--idx: 3"></span>
+          <span class="confetti-piece" style="--idx: 4"></span>
+          <span class="confetti-piece" style="--idx: 5"></span>
+          <span class="confetti-piece" style="--idx: 6"></span>
+          <span class="confetti-piece" style="--idx: 7"></span>
+          <span class="confetti-piece" style="--idx: 8"></span>
+          <span class="confetti-piece" style="--idx: 9"></span>
+          <span class="confetti-piece" style="--idx: 10"></span>
+          <span class="confetti-piece" style="--idx: 11"></span>
+        </div>
+        <svg
+          class="celebration-badge"
+          viewBox="0 0 120 120"
+          width="128"
+          height="128"
+          role="img"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="celebrationGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#14b8a6" />
+              <stop offset="100%" stop-color="#6366f1" />
+            </linearGradient>
+          </defs>
+          <circle cx="60" cy="60" r="52" fill="url(#celebrationGrad)" />
+          <path
+            d="M34 61 L50 77 L88 39"
+            stroke="#fff"
+            stroke-width="9"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <p>All tasks complete — nice work!</p>
+      <button type="button" id="close-celebration">Continue</button>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

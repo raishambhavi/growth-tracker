@@ -2,6 +2,7 @@
  * Daily Growth Tracker API — SQLite + JWT auth
  */
 require("dotenv").config();
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
@@ -15,7 +16,10 @@ const PORT = Number(process.env.PORT) || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-only-change-me-in-production";
 const SALT_ROUNDS = 10;
 
-const ROOT = path.join(__dirname, "..");
+// Repo root may be flat (index.html next to server.js) or nested (server/ subfolder)
+const ROOT = fs.existsSync(path.join(__dirname, "index.html"))
+  ? __dirname
+  : path.join(__dirname, "..");
 const DB_PATH = path.join(__dirname, "growth-tracker.db");
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
